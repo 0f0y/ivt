@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Link Generator</title>
+    <style>
+        /* Dark theme background and font colors */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container styling */
+        .container {
+            background-color: #1e1e1e;
+            border-radius: 15px;
+            padding: 30px;
+            width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-label {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .file-label:hover {
+            background-color: #444;
+        }
+
+        button {
+            background-color: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+        }
+
+        .file-link {
+            display: none;
+            margin-top: 30px;
+            color: #10b981;
+        }
+
+        .file-link a {
+            color: #3b82f6;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .file-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Additional details styling */
+        .details {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #999;
+        }
+
+        .details span {
+            font-weight: bold;
+            color: #fff;
+        }
+
+        /* Animations for file upload and link generation */
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Upload a File</h1>
+
+        <!-- Custom file input -->
+        <label for="fileInput" class="file-label">Select File</label>
+        <input type="file" id="fileInput" accept="image/*,video/*">
+
+        <!-- Upload button -->
+        <button onclick="generateLink()">Upload</button>
+
+        <!-- Generated link display -->
+        <div class="file-link fade-in" id="fileLink">
+            <p>Generated Link:</p>
+            <a id="fileUrl" href="#" target="_blank">Open File</a>
+
+            <!-- Additional details about the file -->
+            <div class="details">
+                <p>File Name: <span id="fileName">N/A</span></p>
+                <p>File Size: <span id="fileSize">N/A</span></p>
+                <p>File Type: <span id="fileType">N/A</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateLink() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const fileType = file.type;
+
+                // Check if the uploaded file is a video or image
+                if (fileType.startsWith('image/') || fileType.startsWith('video/')) {
+                    const fileURL = URL.createObjectURL(file);
+                    document.getElementById('fileUrl').href = fileURL;
+                    document.getElementById('fileUrl').textContent = file.name;
+                    document.getElementById('fileLink').style.display = 'block';
+                    
+                    // Show additional file details
+                    document.getElementById('fileName').textContent = file.name;
+                    document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(2) + ' KB';
+                    document.getElementById('fileType').textContent = file.type;
+                    
+                } else {
+                    alert('Please upload a valid image or video file.');
+                }
+            } else {
+                alert('No file selected.');
+            }
+        }
+    </script>
+
+</body>
+</html>
